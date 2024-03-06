@@ -7,3 +7,5 @@
 -whereas dependencies are the one which are used during the production too
 
 -added prettier so that there is no conflict between the team member's different code while combining
+
+-the code for the gitignore file can be generated throgh gitignore generators
