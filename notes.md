@@ -14,3 +14,10 @@
 
 -another important thing is that always use database is situated in another continent and thus always use async and await.
 
+-remember the nodemon is the one which can restart the server automatically on changes, but important thing is that if there are changes in the .env file then the nodemon needs to be restarted
+
+-while confuguring the dotenv remember few things: 
+    1. always confugure in the starting of the entry point file.
+    2. for current versions only only the require syntax is allowed but we can still use import syntax by changing the dev script to --experimental.
+
+-Always try to resolve error while db connection very gracefully as it would be helpful in debuging.
