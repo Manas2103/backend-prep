@@ -1,0 +1,1 @@
+for staging empty folders in git we will use .gitkeep file, this file will not conating anything but helps the staging empty folder
