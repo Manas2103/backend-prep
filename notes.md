@@ -9,3 +9,8 @@
 -added prettier so that there is no conflict between the team member's different code while combining
 
 -the code for the gitignore file can be generated throgh gitignore generators
+
+-always remember database connectivity can give errors thus always wrap in try catch for catching errors
+
+-another important thing is that always use database is situated in another continent and thus always use async and await.
+
