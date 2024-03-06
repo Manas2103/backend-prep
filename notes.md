@@ -5,3 +5,5 @@
 -nodemon is dev dependency which means it is not required at the time production
 
 -whereas dependencies are the one which are used during the production too
+
+-added prettier so that there is no conflict between the team member's different code while combining
