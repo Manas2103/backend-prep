@@ -2,6 +2,7 @@
 //this syntax of confuguring dotenv will work but the consistency of the code is disrupted
 
 import dotenv from "dotenv"
+import {app} from "./app.js"
 
 import mongoose from "mongoose";
 import {DB_NAME} from "./constants.js";
@@ -15,7 +16,19 @@ dotenv.config({
 
 
 //this is the second approach:
-connectDB();
+connectDB()
+.then(()=> {
+    app.on('error',(error) => {
+        console.log("ERROR : ", error);
+        throw error;
+    })
+    app.listen(process.env.PORT, () => {
+        console.log(`Server started on port ${process.env.PORT}`);
+    })
+})
+.catch((error)=>{
+    console.log("Error in mongoDB connection: ", error);
+})
 
 //this is the first approach where we can create iffy we will use seccond approach
 
