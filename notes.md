@@ -82,3 +82,15 @@
     ```
 
 - ***what it does is takes a function as a parameter inside the wraper or method we created and execute it where it is expected by wrapping it with the foundations of data base connectivity.***
+
+### Handling Api Errors and responses:
+- While handling errors from api requests, we can make a class which extends the Error class already provided and makes it streamlined process to handle erros. Thus making it easier to pass the required parameters like error messgage, successCode, etc.
+
+- Same thing we can do to handle responses from API requests in a streamlined way. Note here there is no parent class.
+
+- For more information read the apiError documentation of express JS. Also find out why 
+
+```javascript
+this.data = null
+```
+- in the apiError file.
