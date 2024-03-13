@@ -94,3 +94,9 @@
 this.data = null
 ```
 - in the apiError file.
+
+
+
+### Model Schemas for user and videos
+
+- ***index*** : Use of index in the schema definition is that, it can be used for searching based fields, although it is very costlier.
