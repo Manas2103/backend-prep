@@ -225,6 +225,6 @@ userSchema.methods.generateRefreshToken() = function(){
 }
 ```
 
-- The differnce in both the tokens is that, the information required in refresh token is very less as it is refresed frequently.
+- The difference in both the tokens is that, the information required in refresh token is very less as it is refresed frequently.
 
 - More will be covered later.
