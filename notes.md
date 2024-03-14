@@ -100,3 +100,131 @@ this.data = null
 ### Model Schemas for user and videos
 
 - ***index*** : Use of index in the schema definition is that, it can be used for searching based fields, although it is very costlier.
+
+
+### Cloudinary:
+- When the cloudinary saves it file, then it will provide us with the url and durartion.
+
+### mongoose-Aggregate-Paginate-v2:
+- This is the library which allows us to write aggregate queries. It uses the real power of mongoDB.
+
+- This is injected as a plugin.
+
+- Use this before exporting the schema. And this is custom plugin.
+
+```javascript
+videoSchema.plugin(mongooseAggregatePaginate)
+```
+
+### bcrypt and bcrptJS
+- Almost same work in both.
+- We are using core bcrypt.
+- It helps us to resolve the problem of clear text passwords by hashing the passwords.
+
+#### ***Both JWT and bcrypt are based on cryptography.***
+
+### JWT:
+- Jason Web Tokens,can be used for tokens.
+- jwt.io
+- Headers contains the algos and type, automatically injected.
+- Payload, the data is injected in this field.
+- Verification Signature, the secret code is the one which makes tokens unique and protect them.
+
+### How does this encryption will work??
+- For this we will take the help of the mongoose hooks as the encryption doesn't work directly.
+- One of which is the pre hook, which is executed just before saving the data, like encryption of password
+- Import both bcrypt and JWT.
+- Its same as plugin.
+- There are multiple events on which can use pre hook, in this case we are using save event.
+
+- It takes two parameters i. event ii. call back, for call backs we will not use arrow function as in that we cannot use context of database like this.password, etc.(Its very important to know the context of DB).
+
+- Since these encryption functions are compplex functions thus takes time, so write async ahead of the call back.
+
+- Inside the callback we must have he access to next flag (middleware).
+
+- Below is the code:
+
+```javascript
+userSchema.pre("save", async function(next){
+    //checking if modified
+    if(!this.isModified("password")) return next();
+    this.password = bcrypt.hash(this.password, 8)
+    next()
+})
+```
+- The if condition is for checking if the database is modified or not, using this to avoid multiple generation of password encryption.
+-bcrypt.hash is a method which hashes the password given and the number '8' is the number of rounds or salts. 
+
+- Now we will write some methods so that when we call the User we can verify the password.
+
+- Mongoose allows custom methods.
+
+- Inside this method for checking the password. bcrypt library provides .compare to compare the user given password and the encrypted password(this.password).
+-Code : 
+```javascript
+userSchema.methods.isPasswordCorrect = async function(password){
+    //it returns true or false
+    return await bcrypt.compare(password, this.password)
+}
+```
+
+#### What does JWT actually do??
+- JWT is a bearer token.
+
+- It means, it is like a key, who have that key it will get the data.
+
+- for this we have to make access_token_secret, access_token_expiry, refresh_token_secret, refresh_token_expiry variables in the environment variables file.
+
+- Remember that refresh tokens ar saved in DB, but access tokens are not.
+
+- Also the expiry for refresh tokens is longer than the access tokens as they are refresed frequently.
+
+- We can use jwt.sign to generate tokens.
+- No async is required:
+
+- Access token :
+```javascript
+userSchema.methods.generateAccessToken() = function(){
+    //sign creates access tokens.
+    jwt.sign(
+        //payload
+        {
+            _id : this._id,
+            email : this.email,
+            username : this.username,
+            fullname : this.fullname
+        },
+        //Access toke secret, it is given directly
+        process.env.ACCESS_TOKEN_SECRET,
+        //expiry, given inside the object
+        {
+            expiresIn : process.env.ACCESS_TOKEN_EXPIRY
+        }
+
+    )
+}
+```
+- Refresh token :
+```javascript
+userSchema.methods.generateRefreshToken() = function(){
+    //sign creates access tokens.
+    jwt.sign(
+        //payload, for refresh token, this much payload is not required
+        {
+            _id : this._id,
+        },
+        //Access toke secret, it is given directly
+        process.env.REFRESH_TOKEN_SECRET,
+        //expiry, given inside the object
+        {
+            expiresIn : process.env.REFRESH_TOKEN_EXPIRY
+        }
+
+    )
+}
+```
+
+- The differnce in both the tokens is that, the information required in refresh token is very less as it is refresed frequently.
+
+- More will be covered later.
