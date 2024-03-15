@@ -228,3 +228,24 @@ userSchema.methods.generateRefreshToken() = function(){
 - The difference in both the tokens is that, the information required in refresh token is very less as it is refresed frequently.
 
 - More will be covered later.
+
+### File Upload:
+- we will use two step process,
+- (i) we will use multer to upload file on to the local server.
+- (ii) then using cloudinary we will upload the file from local server to the cloudinary.
+
+- Remember multer is necessary for file upload and it is a middleware.
+
+- For this we will also require the fs(file system), inbuilt in nodejs.
+
+- fs is used for reading, removing, sync or async, etc, it will provide us with the file path.
+
+- for removing the file we will use the unlink of the fs. The file is not deleted.
+
+- the file upload is complicated same as db connection thus while uploading we will use try catch. Also it will take time, so use async.
+
+- For multer read the documentation with diskStorage part.
+
+- The storage method in the multer provides us the file path.
+
+- Handling will be done later.
