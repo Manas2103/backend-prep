@@ -249,3 +249,37 @@ userSchema.methods.generateRefreshToken() = function(){
 - The storage method in the multer provides us the file path.
 
 - Handling will be done later.
+
+## Starting of controller and router...
+
+- We are going to register the user first.
+
+- the async handler we created will wrap the register user method.
+
+- the asyncHandler will be the super function inside which we will create the method of register user.
+
+- the method includes passing of response status code "200" and response message as "OK".
+
+- below is the code.
+
+```javascript
+const registerUser = asyncHandler( async (req, res) => {
+    res.status(200).json({
+        message : "ok"
+    })
+})
+```
+#### Routers:
+- for every url the router will be different.
+- In production, we will import different routers inside the app.js file not in index.js, it is kept for listening the app.
+
+- To divide the modules inside a file we will write the router import statement at below side.
+
+- Always remember that while declaring the imported router we will use app.use not app.get, thus middleware is compulsary for declaring an imported router. 
+
+- the app.use() will take here two parameters.
+- (i) the preffix path after localhost for eg. we are creating for user registration then it will be "/user". Since its an api making we can add "api/v1/users", its nothing but a good practice.
+
+- (ii) It will take the imported router.
+
+- Now this will work like this when "/user" chosed then userRouter(imported) will be activated and then it will call the register user controller according to the HTTP methods for handing over the control. Also here all the paths like "/register" and "/login" will be given over the prefix path set in the above 1st parameter.
