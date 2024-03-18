@@ -2,7 +2,7 @@
 //this syntax of confuguring dotenv will work but the consistency of the code is disrupted
 
 import dotenv from "dotenv"
-import {app} from "./app.js"
+import {app} from "./app.js "
 
 import mongoose from "mongoose";
 import {DB_NAME} from "./constants.js";
@@ -11,7 +11,7 @@ import connectDB from "./db/index.js"
 
 //new method, for this we add something in the package.json file i.e. in dev script ("dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js")
 dotenv.config({
-    path : "./env"
+    path : "./env"  
 })
 
 

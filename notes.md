@@ -283,3 +283,60 @@ const registerUser = asyncHandler( async (req, res) => {
 - (ii) It will take the imported router.
 
 - Now this will work like this when "/user" chosed then userRouter(imported) will be activated and then it will call the register user controller according to the HTTP methods for handing over the control. Also here all the paths like "/register" and "/login" will be given over the prefix path set in the above 1st parameter.
+
+### Logic builiding exercise:
+- based on real world coding.
+
+- break down the bigger problem into smaller problems.
+
+- Take the problem of registration of an user.
+
+#### Below are the steps or smaller problems for user registration.
+
+- get user details from frontend(we will use postman)
+
+- validate if fields are empty or not.
+
+- check if user already exists.
+
+- Check for avatars as it is compulsary.
+
+- upload the files to cloudinary.
+
+- Implement req. checks for upload to cloudinary through multer.
+
+- create user object as entries to DB, in mongoDB entries are in the form of objects.
+
+- remove password and refresh token fields from the response.
+
+- check whether the user is created or not.
+
+- return the response.
+
+- Code part :
+
+- if the data from user is coming from form then we can get that by req.body , where  req -> request.
+
+- data from url are handled differenty.
+
+- now destructure this req.body
+
+- like {fullName, email, usrname, password} = req.body
+
+- This data will from form fields taking data not for the files.
+
+- Before handling the files, we use postman for testing the data of req.body
+
+- for now in body section go to raw data and select json.
+
+- Here provide the data in JSON form (key : value) pair
+
+- Now for handling the files, we have created a middleware multer, for this to get implemented we will call this middleware just before executing the registerUser method in user router.
+
+- upload is the name of imported middleware(multer---storage).
+
+- It provide us multiple methods like taking single file, array of files(this will be multilple files from single field), fields(for taking files from multiple input).
+
+we will use this upload.fields -> inside this we need to create array of object of files' name and maxcount for each field.
+
+- Refer the code file for code.
