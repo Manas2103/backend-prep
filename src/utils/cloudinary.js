@@ -3,7 +3,7 @@ import fs from "fs"
 
 //configure the cloudinary
 
-import {v2 as cloudinary} from 'cloudinary';
+// import {v2 as cloudinary} from 'cloudinary';
 import { response } from "express";
           
 cloudinary.config({ 
@@ -22,6 +22,7 @@ const uploadOnCloudinary = async (localfilepath)=>{
         })
         //file uploaded successfully
         console.log("File uploaded ", response.url);
+        fs.unlinkSync(localfilepath)
         return response
     } catch (error) {
         fs.unlinkSync(localfilepath)//delete from local server

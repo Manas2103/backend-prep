@@ -339,4 +339,6 @@ const registerUser = asyncHandler( async (req, res) => {
 
 we will use this upload.fields -> inside this we need to create array of object of files' name and maxcount for each field.
 
+- when our the user is created inside the db mongodb automatically provides an _id to that user. which we can use.
+
 - Refer the code file for code.

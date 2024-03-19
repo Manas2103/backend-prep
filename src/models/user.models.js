@@ -1,4 +1,4 @@
-import mongoose, {Schema} from mongoose;
+import mongoose, {Schema} from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 
@@ -19,7 +19,7 @@ const userSchema = new Schema(
             trim : true,
             lowercase : true,
         },
-        fullname : {
+        fullName : {
             type : String,
             required : true,
             trim : true,
@@ -65,7 +65,7 @@ userSchema.methods.isPasswordCorrect = async function(password){
 }
 
 //genrate access and refresh tokens
-userSchema.methods.generateAccessToken() = function(){
+userSchema.methods.generateAccessToken = function(){
     //sign creates access tokens.
     jwt.sign(
         //payload
@@ -85,7 +85,7 @@ userSchema.methods.generateAccessToken() = function(){
     )
 }
 
-userSchema.methods.generateRefreshToken() = function(){
+userSchema.methods.generateRefreshToken  = function(){
     //sign creates access tokens.
     jwt.sign(
         //payload, for refresh token, this much payload is not required
