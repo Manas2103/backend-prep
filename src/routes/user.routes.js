@@ -1,6 +1,7 @@
 import {Router} from "express"
-import { registerUser } from "../controllers/user.controller.js";
+import { registerUser, loginUser, logoutUser } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 // initiated same as app in express
 
@@ -18,6 +19,13 @@ router.route("/register").post(
         }
     ]),
     registerUser
-    )
+)
+
+router.route("/login").post(loginUser)
+
+// secured routes(auth required)
+
+router.route("/logout").post(verifyJWT,logoutUser)
+// .post(middleware1, middleware2,....., function to be executed)
 
 export default router;

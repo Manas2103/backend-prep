@@ -4,6 +4,23 @@ import {User} from "../models/user.models.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 
+const generateAccessandRefreshToken = async(userId) => {
+    try {
+        const user = await User.findById(userId)
+        // console.log(user);
+        const accessToken = user.generateAccessToken()
+        const refreshToken = user.generateRefreshToken()
+
+        // console.log(accessToken)
+        // console.log(refreshToken)
+        user.refreshTokens = refreshToken
+        await user.save({validteBeforeSave : false})
+        return {accessToken, refreshToken}
+    } catch (error) {
+        throw new ApiError(500, "Something went wrong while genrating acesstoken")
+    }
+} 
+
 const registerUser = asyncHandler( async (req, res) => {
     // res.status(200).json({
     //     message : "ok"
@@ -119,4 +136,104 @@ const registerUser = asyncHandler( async (req, res) => {
 
 })
 
-export {registerUser};
+const loginUser = asyncHandler( async (req, res) => {
+    // Steps : 
+    // data from req
+    // check for username or email(imp).
+    // Find the user
+    // check for password
+    // access and refresh token
+    // send tokens in form of secure cookies
+    // send res.
+
+    const {username, email, password} = req.body
+
+    if(!username && !email){
+        throw new ApiError(400, "username or password is required")
+    }
+
+    const user = await User.findOne({
+        $or : [{username}, {email}]
+    })
+
+    if(!user){
+        throw new ApiError(404, "User does not exist")
+    }
+
+    // here for methods calling of user models we will not use User as its an object of mongoose, 
+    // but the methids we made are accessible through our instance of User i.e. "user".
+
+    // check password
+
+    const isPassValid = await user.isPasswordCorrect(password)
+
+    if(!isPassValid){
+        throw new ApiError(401, "Password incorrect")
+    }
+
+    // create access and refresh tokens
+    // create one method
+    
+    const {refreshToken, accessToken} = await generateAccessandRefreshToken(user._id)
+
+    const loggedInUser = await User.findById(user._id).select("-password -refreshTokens")
+
+    // send response with cookies.
+    // for cookies we need to give options such that only server can modify the cookie not the client.
+
+    //options
+    const option = {
+        httpOnly : true,
+        secure : true
+    }
+    // cookie("keyname", value, options)
+    return res
+    .status(200)
+    .cookie("accessToken", accessToken, option)
+    .cookie("refreshToken", refreshToken, option)
+    .json(
+        new ApiResponse(
+            200,
+            {
+                user : loggedInUser, refreshToken, accessToken
+            },
+            "User logged in successfully"
+        )
+    )
+
+})
+
+const logoutUser = asyncHandler(async (req, res) => {
+    const userId = req.user._id
+
+    await User.findByIdAndDelete(
+        userId,
+        {
+            $set : {
+                refreshTokens : undefined
+            }
+        },
+        {
+            new : true
+        }
+    )
+
+    const option = {
+        httpOnly : true,
+        secure : true
+    }
+
+    return res
+    .status(200)
+    .clearCookie("accessToken", option)
+    .clearCookie("refreshToken", option)
+    .json(
+        new ApiResponse(
+            200,
+            {},
+            "User logged Out"
+        )
+    )
+})
+
+export {registerUser, loginUser, logoutUser};

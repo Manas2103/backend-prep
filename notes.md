@@ -342,3 +342,39 @@ we will use this upload.fields -> inside this we need to create array of object 
 - when our the user is created inside the db mongodb automatically provides an _id to that user. which we can use.
 
 - Refer the code file for code.
+
+
+### Use of Access tokens and refresh tokens:
+
+- Access token is used in the operation where user authentication is required.
+
+- Access tokens are generally short lived and get expired in a short duration wrt the refresh tokens.
+
+- When this access token is expired, the user needs to re-login for generating new access tokens.
+
+- This cannot be done repeatedly by the user in real time. This is where the refresh tokens come into play.
+
+- Refresh tokens are given to users with the access tokens and they are long lived compare to access tokens.
+
+- When the user's access token gets expired, the refresh token with the user is compared with the refresh token kept in server.
+
+- If this matches then new access token is granted to the user.
+
+- *** The validation of the user is given by using access token only. ***
+
+
+- For logging out user, we do not have the access of anything user id or anything.
+
+- So we will create a middleware auth which will verify the user before logging out also jwt gives us verify which will return decoded information through which we can get the user id send during jwt.sign generating the tokens.
+
+- Since cookies arent everywhere therefore sometimes the tokens data can access by the custom headers user sending.
+
+
+- the received decoded info is used to find the user in the DB.
+
+- now create a field inside the req object of user.
+
+- This new field van be used in getting user id in logout.
+
+- If any of the field like res or req is not used we can mention "_" insted of them.
+
