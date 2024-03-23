@@ -13,7 +13,7 @@ const generateAccessandRefreshToken = async(userId) => {
 
         // console.log(accessToken)
         // console.log(refreshToken)
-        user.refreshTokens = refreshToken
+        user.refreshToken = refreshToken
         await user.save({validteBeforeSave : false})
         return {accessToken, refreshToken}
     } catch (error) {
@@ -176,7 +176,7 @@ const loginUser = asyncHandler( async (req, res) => {
     
     const {refreshToken, accessToken} = await generateAccessandRefreshToken(user._id)
 
-    const loggedInUser = await User.findById(user._id).select("-password -refreshTokens")
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
     // send response with cookies.
     // for cookies we need to give options such that only server can modify the cookie not the client.
@@ -210,7 +210,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         userId,
         {
             $set : {
-                refreshTokens : undefined
+                refreshToken : undefined
             }
         },
         {
