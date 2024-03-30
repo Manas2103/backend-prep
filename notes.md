@@ -378,3 +378,10 @@ we will use this upload.fields -> inside this we need to create array of object 
 
 - If any of the field like res or req is not used we can mention "_" insted of them.
 
+### Finding number of subscribers and channel subscribed for a user using the subscription schema.
+
+- Whenever a user clicks subscribe new ducument is made with chanel = (user who is subscribed), subscriber = (user who is subscribing)
+
+- For getting the number of subscribers for a specific user "a" we will select all the documents with channel = "a".
+
+- And for getting no. of channels subscribed for user "b" we will select all the documents with subscriber = "b".
